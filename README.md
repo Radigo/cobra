@@ -7,6 +7,11 @@
 Rendering pipeline URP (https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/manual/index.html)
 https://youtu.be/932zZeSWbXE?si=D7B6BGqNsanBQdug
 
+Spline roads
+https://www.youtube.com/watch?v=ZiHH_BvjoGk
+
+
+
 ### Mobile oriented (android)
 3D (rotating camera?)
 

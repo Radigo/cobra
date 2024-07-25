@@ -11,12 +11,12 @@ public class PlayerControls : MonoBehaviour
 
     // Transform
     private float steerInit = 0.0f;
-    private float thrustCurrent = 0.0f;
+    private float speed = 0.0f;
 
     // Gameplay
-    public float steeringMultiplier = 0.2f;
-    public float thrustMultiplier = 0.1f;
-    public float maxSpeed = 10.0f;
+    public float steeringMultiplier = 0.6f;
+    public float thrustMultiplier = 200.0f;
+    public float speedMax = 1000.0f;
     public float brakeMultiplier = 0.5f;
 
     // Start is called before the first frame update
@@ -85,9 +85,9 @@ public class PlayerControls : MonoBehaviour
 
     void touchDown() {
         // Thrust
-        thrustCurrent = Mathf.Min(thrustCurrent + thrustMultiplier, maxSpeed);
-        //Debug.Log("<touchDown> Accel. to " + thrustCurrent + ", direction: " + transform.rotation);
-        rb.AddForce(transform.rotation * Vector3.forward * thrustCurrent, ForceMode.Acceleration);
+        speed = Mathf.Min((speed + (thrustMultiplier * Time.deltaTime)), speedMax);
+        //Debug.Log("<touchDown> Accel. to " + speed + ", direction: " + transform.rotation);
+        rb.AddForce(transform.rotation * Vector3.forward * speed * Time.deltaTime, ForceMode.Acceleration);
     }
 
     void touchMoved(float p_position) {
@@ -102,19 +102,21 @@ public class PlayerControls : MonoBehaviour
     void touchUp() {
         //Debug.Log("<touchUp>");
         // Slow down
-        thrustCurrent = Mathf.Max(thrustCurrent - brakeMultiplier, 0.0f);
+        speed = Mathf.Max(((speed - brakeMultiplier) * Time.deltaTime), 0.0f);
     }
 
     public float getThrustRatio() {
-        //Debug.Log("<getThrustRatio> thrustCurrent: " + thrustCurrent + ", maxSpeed: " + maxSpeed);
-        return thrustCurrent / maxSpeed;
+        //Debug.Log("<getThrustRatio> speedCurrent: " + speedCurrent + ", maxSpeed: " + maxSpeed);
+        return speed / speedMax;
     }
 
     public Vector3 getVelocityNormalized() {
         // Returns the actual velocity vector of the boat, regardless where it's facing (ignore forward vector)
-        Debug.Log("<getVelocityNormalized> " + rb.velocity);
-        if (rb.velocity.distance < 0.02f) >> touchDown: Avoid jitter here
+        //Debug.Log("<getVelocityNormalized> " + rb.velocity);
+        if (rb.velocity.magnitude < 0.02f) {
             return Vector3.zero;
+        }
+
         return rb.velocity.normalized;
     }
 }

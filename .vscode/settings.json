@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Cobra.sln"
+    "dotnet.defaultSolution": "cobra.sln"
 }
